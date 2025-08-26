@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generative AI Project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin: 10px 0 5px;
+            display: block;
+        }
+
+        textarea {
+            width: 500px;
+            max-width: 90%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            margin-bottom: 15px;
+            background: #fff;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #fff;
+            background: #3498db;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        #res {
+            background: #fdfdfd;
+            border: 1px solid #bbb;
+            min-height: 250px;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 600px;
+            max-width: 95%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Welcome To Generative AI Project</h1>
+
+    <label for="quest">Please provide your question :</label>
+    <textarea name="feedback" placeholder="Write your question here..." rows="3" id="quest"></textarea>
+
+    <label for="lang">Choose your programming language :</label>
+    <textarea name="language" placeholder="Please enter your programming language..." rows="3" id="lang"></textarea>
+
+    <button onclick="generateCode()">🚀 Generate Code Using GPT 3.5 Turbo</button>
+
+    <label for="res"><h2>Result :</h2></label>
+    <textarea name="result" rows="20" id="res"></textarea>
+</div>
+
+<script>
+    async function generateCode() {
+        const question = document.getElementById("quest").value;
+        const language = document.getElementById("lang").value;
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ question: question, language: language })
+            });
+
+            const data = await response.json();
+            document.getElementById("res").value = data.result || "No response received.";
+        } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("res").value = "⚠️ Error fetching response.";
+        }
+    }
+</script>
+
+</body>
+</html>
